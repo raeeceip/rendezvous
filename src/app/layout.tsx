@@ -15,16 +15,16 @@ const geist = Geist({
 export const metadata: Metadata = {
   title: {
     default: "Rendezvous Restaurant | Fine Dining Experience",
-    template: "%s | Rendezvous Restaurant"
+    template: "%s | Rendezvous"
   },
   description: "Experience exquisite fine dining at Rendezvous. Featuring modern French cuisine in an elegant setting in the heart of the city.",
   keywords: ["fine dining", "French restaurant", "luxury dining", "Rendezvous restaurant"],
-  authors: [{ name: "Rendezvous Restaurant" }],
+  authors: [{ name: "Chibogu Chisom" }],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://rendezvous.restaurant",
-    siteName: "Rendezvous Restaurant",
+    siteName: "Rendezvos",
     title: "Rendezvous Restaurant",
     description: "Experience exquisite fine dining at Rendezvous. Modern French cuisine in an elegant setting.",
     images: [

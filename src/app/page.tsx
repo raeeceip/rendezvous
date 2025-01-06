@@ -99,7 +99,7 @@ export default function HomePage() {
               <div className="flex items-center">
                 <div className="w-12 h-12">
                   <Image
-                    src="//Users/chisomchibogu/Downloads/icon.svg"
+                    src="/logo.svg"
                     alt="Rendezvous"
                     width={48}
                     height={48}
