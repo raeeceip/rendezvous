@@ -205,7 +205,7 @@ export default function HomePage() {
             <div className="flex space-x-4">
               <Button 
                 variant="outline" 
-                className="border-zinc-100 text-zinc-100 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg"
+                className="border-zinc-600 text-zinc-600 hover:bg-zinc-600 hover:text-zinc-900 font-cormorant text-lg"
                 onClick={() => window.open(OPENTABLE_LINK, '_blank')}
               >
                 Reserve a Table
@@ -214,7 +214,7 @@ export default function HomePage() {
                 <DialogTrigger asChild>
                   <Button 
                     variant="outline" 
-                    className="border-zinc-100 text-zinc-100 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg"
+                    className="border-zinc-600 text-zinc-600 hover:bg-zinc-600 hover:text-zinc-900 font-cormorant text-lg"
                   >
                     View Menu
                   </Button>
