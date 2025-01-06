@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rendezvous.restaurant/sitemap.xml
