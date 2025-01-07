@@ -10,6 +10,15 @@ export default {
   theme: {
   	extend: {
   		colors: {
+			marble: {
+				light: '#F5F5F5',
+				dark: '#18181B',
+				accent: '#D4AF37',
+				text: '#A1A1AA',
+			  },
+			border: "hsl(var(--border))",
+			input: "hsl(var(--input))",
+			ring: "hsl(var(--ring))",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -40,9 +49,8 @@ export default {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'
   			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
+
+ 
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
@@ -56,8 +64,13 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		}, 
+		card: {
+			DEFAULT: "hsl(var(--card))",
+			foreground: "hsl(var(--card-foreground))",
+		  },
 		  fontFamily: {
 			playfair: ['Playfair Display', 'serif'],
+			cormorant: ['var(--font-cormorant)', 'serif'],
 		  },
   	}
   },

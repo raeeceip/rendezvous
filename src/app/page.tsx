@@ -3,36 +3,64 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
+// Add custom styles to match the logo
+const customStyles = {
+  backgroundGradient: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5))',
+  overlayColor: 'rgba(0, 0, 0, 0.6)',
+};
 
 // Types
 type MenuItem = {
   name: string;
   description: string;
-  price: number;
+  price: number | string;
 };
 
 type MenuCategories = {
-  [K in 'starters' | 'mains' | 'desserts']: MenuItem[];
+  smalls: MenuItem[];
+  shared: MenuItem[];
+  large: MenuItem[];
+  steakhouse: MenuItem[];
+  salads: MenuItem[];
+  desserts: MenuItem[];
 };
 
 // Constants
 const menuCategories: MenuCategories = {
-  starters: [
-    { name: 'Lobster Bisque', description: 'Creamy lobster soup with cognac', price: 18 },
-    { name: 'Beef Carpaccio', description: 'Thinly sliced beef with truffle oil and parmesan', price: 22 },
-    { name: 'Wild Mushroom Tart', description: 'Seasonal mushrooms, aged gruyere, herbs', price: 16 }
+  smalls: [
+    { name: 'Crispy Wings', description: 'smoky BBQ, house hot, honey garlic, peri-peri, dry rub, honey hot, lemon pepper', price: 18 },
+    { name: 'Jerk Dip', description: 'Swiss cheese blend, black herb butter with a side of grilled naan', price: 17 },
+    { name: 'Tacos', description: 'Your choice of creole shrimp or chicken, pickled slaw, mango salsa, cajun crema', price: 16 }
   ],
-  mains: [
-    { name: 'Wagyu Ribeye', description: 'Grade A5 Japanese Wagyu, seasonal vegetables', price: 95 },
-    { name: 'Dover Sole', description: 'Pan-seared sole, lemon butter sauce', price: 68 },
-    { name: 'Truffle Risotto', description: 'Carnaroli rice, black truffle, aged parmesan', price: 42 }
+  shared: [
+    { name: 'Chicken Dumplings', description: 'Jerk chicken and slaw filling with a sweet and spicy ginger sauce', price: 17 },
+    { name: 'Crispy Cauliflour', description: 'Korean BBQ sauce, pickled slaw topped with sesame seeds', price: 15 },
+    { name: 'Charcuterie', description: 'Brie and cheddar, prosciutto, coppa salami, grapes, dried fruit, strawberry compote', price: 25 }
+  ],
+  large: [
+    { name: 'Blackened Chicken', description: 'Chicken breast, sun dried mushroom rice, pickled slaw sweet plantain, jalapeno crema', price: 35 },
+    { name: 'Pan Seared Salmon', description: 'Salmon fillet on a bed of aromatic rice with seasonal vegetables', price: 33 },
+    { name: 'Jollof Heritage', description: 'Jollof rice, 6oz sirloin coleslaw, plantains', price: 39 }
+  ],
+  steakhouse: [
+    { name: '6oz or 12oz Steak', description: 'Your choice of 6oz sirloin or 12oz ribeye, in our house marinade, seasonal vegetables and fries', price: '35/55' },
+    { name: 'Steak and Shrimp', description: 'Your choice of 6oz sirloin with black tiger shrimp in browned butter', price: '45/63' },
+    { name: 'Gold Lamb Chops', description: 'Half rack or full rack in our house marinade, chimichurri sauce', price: '52/77' }
+  ],
+  salads: [
+    { name: 'Mango Salad', description: 'Black tiger shrimp, white wine vinaigrette, avocado crema, tajin, cucumber', price: 24 },
+    { name: 'Caesar Salad', description: 'romaine, caesar dressing, toasted rosemary garlic bread crumbs, grated parmesan, bacon', price: 22 },
+    { name: 'Frisée Salad', description: 'potato, lemon vinaigrette, double bacon, topped with shaved cheddar', price: 20 }
   ],
   desserts: [
-    { name: 'Crème Brûlée', description: 'Tahitian vanilla, caramelized sugar', price: 14 },
-    { name: 'Chocolate Soufflé', description: 'Valrhona chocolate, vanilla ice cream', price: 16 },
-    { name: 'Pineapple Brûlée', description: 'Caramelized pineapple, fresh berries, coconut cream', price: 15 }
+    { name: 'Pineapple Crème Brûlée', description: 'Pineapple bowl with fresh fruit', price: 10 },
+    { name: 'Berry Cheesecake', description: 'Classic New York style cheesecake raspberry bourbon sauce', price: 12 },
+    { name: 'Rum Infused Brownie', description: 'Dark chocolate rum infused brownie, vanilla ice cream', price: 12 }
   ]
 };
 
@@ -40,25 +68,25 @@ const OPENTABLE_LINK = process.env.NEXT_PUBLIC_OPENTABLE_LINK || "https://www.op
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<keyof MenuCategories>('mains');
-  const [mounted, setMounted] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<keyof MenuCategories>('large');
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Handle hydration mismatch
   useEffect(() => {
-    setMounted(true);
+    setIsMounted(true);
   }, []);
 
-  if (!mounted) {
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!isMounted) {
     return null;
   }
 
   const MenuDialog = () => (
-    <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-zinc-900/95 backdrop-blur-sm">
+    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-zinc-900/95 backdrop-blur-sm">
       <DialogHeader>
         <DialogTitle className="text-3xl font-cormorant text-center mb-8 text-zinc-100">Our Menu</DialogTitle>
       </DialogHeader>
-      <div className="space-y-12 p-6">
-        <div className="flex justify-center space-x-4 mb-8">
+      <div className="space-y-8 p-6">
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
           {Object.keys(menuCategories).map((category) => (
             <Button
               key={category}
@@ -74,53 +102,77 @@ export default function HomePage() {
             </Button>
           ))}
         </div>
-        <div className="space-y-6">
-          {menuCategories[selectedCategory].map((item, index) => (
-            <div key={index} className="flex justify-between items-start p-4 border-b border-zinc-800">
-              <div>
-                <h4 className="font-cormorant font-medium text-lg text-zinc-100">{item.name}</h4>
-                <p className="text-zinc-400 text-sm mt-1 font-light">{item.description}</p>
-              </div>
-              <span className="font-cormorant text-lg text-zinc-100">${item.price}</span>
-            </div>
-          ))}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedCategory}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
+            {menuCategories[selectedCategory].map((item, index) => (
+              <motion.div
+                key={`${selectedCategory}-${index}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="flex justify-between items-start p-4 border-b border-zinc-800"
+              >
+                <div className="flex-1 pr-4">
+                  <h4 className="font-cormorant font-medium text-lg text-zinc-100">{item.name}</h4>
+                  <p className="text-zinc-400 text-sm mt-1 font-light">{item.description}</p>
+                </div>
+                <span className="font-cormorant text-lg text-zinc-100 whitespace-nowrap">
+                  ${item.price}
+                </span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </DialogContent>
   );
 
   return (
-    <div className="min-h-screen bg-zinc-900">
+    <main className="min-h-screen bg-zinc-900 overflow-x-hidden">
       {/* Header */}
-      <header className="fixed w-full bg-zinc-900/90 backdrop-blur-sm border-b border-zinc-800 z-50">
+      <header className="fixed w-full bg-zinc-900/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="relative">
-              <div className="flex items-center">
-                <div className="w-12 h-12">
-                  <Image
-                    src="/logo.svg"
-                    alt="Rendezvous"
-                    width={48}
-                    height={48}
-                    className="w-full h-full rounded-full"
-                  />
-                </div>
-
+          <div className="flex justify-between items-center py-6">
+            <Link href="/" className="flex items-center space-x-4">
+              <div className="w-16 h-16 relative">
+                <Image
+                  src="/logo.svg"
+                  alt="Rendezvous"
+                  width={64}
+                  height={64}
+                  className="w-full h-full rounded-full"
+                  priority
+                />
               </div>
-            </div>
+              <span className="text-3xl font-cormorant text-zinc-100 tracking-widest font-light">Rendezvous</span>
+            </Link>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8 font-cormorant">
-              <a href="#about" className="text-zinc-300 hover:text-zinc-100 transition-colors">About</a>
+              <a href="#about" className="text-zinc-300 hover:text-zinc-100 transition-colors">
+                About
+              </a>
               <Dialog>
-                <DialogTrigger className="text-zinc-300 hover:text-zinc-100 transition-colors">Menu</DialogTrigger>
+                <DialogTrigger>
+                  <span className="text-zinc-300 hover:text-zinc-100 transition-colors cursor-pointer">
+                    Menu
+                  </span>
+                </DialogTrigger>
                 <MenuDialog />
               </Dialog>
-              <a href="#contact" className="text-zinc-300 hover:text-zinc-100 transition-colors">Contact</a>
+              <a href="#contact" className="text-zinc-300 hover:text-zinc-100 transition-colors">
+                Contact
+              </a>
               <Button 
                 variant="outline" 
-                className="border-zinc-700 text-zinc-500 hover:bg-zinc-800 font-cormorant"
+                className="border-zinc-700 text-zinc-100 hover:bg-zinc-800 font-cormorant"
                 onClick={() => window.open(OPENTABLE_LINK, '_blank')}
               >
                 Book a Table
@@ -158,65 +210,80 @@ export default function HomePage() {
           </div>
 
           {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="md:hidden py-4 border-t border-zinc-800">
-              <div className="flex flex-col space-y-4">
-                <a href="#about" className="text-zinc-300 hover:text-zinc-100">About</a>
-                <Dialog>
-                  <DialogTrigger className="text-left text-zinc-300 hover:text-zinc-100">Menu</DialogTrigger>
-                  <MenuDialog />
-                </Dialog>
-                <a href="#contact" className="text-zinc-300 hover:text-zinc-100">Contact</a>
-                <Button 
-                  variant="outline" 
-                  className="border-zinc-700 text-zinc-100 hover:bg-zinc-800 w-full font-cormorant"
-                  onClick={() => window.open(OPENTABLE_LINK, '_blank')}
-                >
-                  Book a Table
-                </Button>
-              </div>
-            </div>
-          )}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden border-t border-zinc-800"
+              >
+                <div className="py-4 flex flex-col space-y-4">
+                  <a href="#about" className="text-zinc-300 hover:text-zinc-100">About</a>
+                  <Dialog>
+                    <DialogTrigger className="text-left text-zinc-300 hover:text-zinc-100">
+                      Menu
+                    </DialogTrigger>
+                    <MenuDialog />
+                  </Dialog>
+                  <a href="#contact" className="text-zinc-300 hover:text-zinc-100">Contact</a>
+                  <Button 
+                    variant="outline" 
+                    className="border-zinc-700 text-zinc-100 hover:bg-zinc-800 w-full font-cormorant"
+                    onClick={() => window.open(OPENTABLE_LINK, '_blank')}
+                  >
+                    Book a Table
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </header>
 
       {/* Hero Section */}
       <section className="relative h-screen">
-        <div className="absolute inset-0 bg-black/50">
+        <div className="absolute inset-0">
           <Image 
             src="/adobestock.jpeg" 
             alt="Restaurant ambiance" 
             fill
-            className="object-cover mix-blend-overlay"
+            className="object-cover"
             priority
+            sizes="100vw"
+          />
+          <div 
+            className="absolute inset-0" 
+            style={{ background: customStyles.backgroundGradient }}
           />
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-          <div className="flex flex-col justify-center h-full text-zinc-100">
-            <h1 className="text-6xl md:text-8xl font-cormorant font-light mb-6 tracking-wider">
-              A Culinary Journey
+          <div className="flex flex-col justify-center h-full text-zinc-100 pt-24">
+            <h1 className="text-6xl md:text-8xl font-cormorant font-light mb-8 tracking-widest leading-tight">
+              A Culinary<br />Journey
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-2xl font-cormorant font-light tracking-wide">
+            <p className="text-xl md:text-3xl mb-12 max-w-2xl font-cormorant font-light tracking-wider leading-relaxed">
               Experience the art of fine dining in an atmosphere of understated elegance.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row gap-5">
               <Button 
                 variant="outline" 
-                className="border-zinc-600 text-zinc-600 hover:bg-zinc-600 hover:text-zinc-900 font-cormorant text-lg"
+                className="border-zinc-800 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg"
                 onClick={() => window.open(OPENTABLE_LINK, '_blank')}
               >
                 Reserve a Table
               </Button>
               <Dialog>
-                <DialogTrigger asChild>
+                <Link href="/menu">
                   <Button 
-                    variant="outline" 
-                    className="border-zinc-600 text-zinc-600 hover:bg-zinc-600 hover:text-zinc-900 font-cormorant text-lg"
+                  variant="outline" 
+                  className="border-zinc-800 w-full text-zinc-500 hover:bg-zinc-500 hover:text-zinc-900 font-cormorant text-lg"
                   >
-                    View Menu
+                  View Menu
                   </Button>
-                </DialogTrigger>
+                </Link>
                 <MenuDialog />
               </Dialog>
             </div>
@@ -224,95 +291,153 @@ export default function HomePage() {
         </div>
       </section>
 
-        {/* About Section */}
-        <section id="about" className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <img 
-                  src="restaurant.jpeg" 
-                  alt="Our restaurant" 
-                  className="rounded-lg shadow-lg"
-                />
-              </div>
-              <div>
-                <h2 className="text-4xl text-white font-bold mb-6 font-playfair">Our Story</h2>
-                <p className="text-gray-600 mb-6">
-                  Founded in 2025, Rendezvous is dedicated to  serving exceptional cuisine
-                  in an elegant setting. Our passion for quality ingredients and
-                  innovative cooking techniques has made us a destination for food
-                  lovers.
-                </p>
-                <Button variant="default" className="bg-gray-600 hover:bg-gray-700 font-playfair">
-                  Learn More
-                </Button>
-              </div>
+      {/* About Section */}
+      <section id="about" className="py-24 bg-zinc-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="relative h-[400px] md:h-[600px]">
+              <Image 
+                src="/restaurant.jpeg" 
+                alt="Our restaurant" 
+                fill
+                className="rounded-lg shadow-xl object-cover"
+              />
+            </div>
+            <div className="space-y-8">
+              <h2 className="text-5xl text-zinc-100 font-light mb-6 font-cormorant tracking-wide">Our Story</h2>
+              <p className="text-zinc-300 text-lg mb-8 font-light leading-relaxed">
+                Founded in 2025, Rendezvous is dedicated to serving exceptional cuisine
+                in an elegant setting. Our passion for quality ingredients and
+                innovative cooking techniques has made us a destination for food
+                lovers, combining traditional flavors with modern presentations.
+              </p>
+              <p className="text-zinc-300 text-lg mb-8 font-light leading-relaxed">
+                Every dish tells a story, crafted with precision and care by our expert culinary team.
+                We believe in creating moments that last, experiences that linger, and flavors that inspire.
+              </p>
+              <Button 
+                variant="outline" 
+                className="border-zinc-800 text-zinc-100 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg px-8 py-6"
+              >
+                Learn More
+              </Button>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Contact Section */}
-        <section id="contact" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <h2 className="text-4xl font-bold mb-6 font-playfair">Visit Us</h2>
-                <div className="space-y-4">
-                  <p className="text-gray-600">
+      {/* Special Features Section */}
+      <section className="py-24 bg-zinc-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="text-center space-y-4">
+              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Private Events</h3>
+              <p className="text-zinc-300 font-light leading-relaxed">
+                Create unforgettable moments in our elegant private dining spaces.
+              </p>
+            </div>
+            <div className="text-center space-y-4">
+              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Wine Selection</h3>
+              <p className="text-zinc-300 font-light leading-relaxed">
+                Curated collection of fine wines from around the world.
+              </p>
+            </div>
+            <div className="text-center space-y-4">
+              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Chef's Table</h3>
+              <p className="text-zinc-300 font-light leading-relaxed">
+                An intimate dining experience with our executive chef.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-24 bg-zinc-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-16">
+            <div className="space-y-8">
+              <h2 className="text-5xl font-cormorant text-zinc-100 font-light tracking-wide">Visit Us</h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-2xl font-cormorant text-zinc-200 mb-4">Location</h3>
+                  <p className="text-zinc-300 text-lg font-light leading-relaxed">
                     123 Dining Street<br />
                     Foodville, FD 12345
                   </p>
-                  <p className="text-gray-600">
-                    <strong>Hours:</strong><br />
-                    Mon-Fri: 11am - 10pm<br />
-                    Sat-Sun: 5pm - 11pm
+                </div>
+                <div>
+                  <h3 className="text-2xl font-cormorant text-zinc-200 mb-4">Hours</h3>
+                  <p className="text-zinc-300 text-lg font-light leading-relaxed">
+                    Monday - Friday: 11am - 10pm<br />
+                    Saturday - Sunday: 5pm - 11pm
                   </p>
-                  <p className="text-gray-600">
-                    <strong>Contact:</strong><br />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-cormorant text-zinc-200 mb-4">Contact</h3>
+                  <p className="text-zinc-300 text-lg font-light leading-relaxed">
                     Phone: (555) 123-4567<br />
                     Email: info@rendezvous.restaurant
                   </p>
                 </div>
               </div>
-              <div>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="font-playfair">Make a Reservation</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button 
-                      variant="default" 
-                      className="w-full bg-gray-600 hover:bg-gray-700 font-playfair"
-                      onClick={() => window.open(OPENTABLE_LINK, '_blank')}
-                    >
-                      Book on OpenTable
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
+            </div>
+            <div>
+              <Card className="bg-zinc-800 border-zinc-700">
+                <CardHeader>
+                  <CardTitle className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide text-center">Make a Reservation</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <p className="text-zinc-300 text-center font-light leading-relaxed">
+                    Join us for an unforgettable dining experience.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-zinc-800 text-zinc-100 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg py-6"
+                    onClick={() => window.open(OPENTABLE_LINK, '_blank')}
+                  >
+                    Book on OpenTable
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="bg-gray-900 text-white py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <div className="text-2xl font-bold mb-4 font-playfair">Rendezvous</div>
-              <p className="text-gray-400 mb-4">Fine dining at its finest</p>
-              <div className="flex justify-center space-x-4">
-                <a href="#" className="hover:text-gray-600">Instagram</a>
-                <a href="#" className="hover:text-gray-600">Facebook</a>
-                <a href="#" className="hover:text-gray-600">Twitter</a>
-              </div>
+      {/* Footer */}
+      <footer className="bg-zinc-900 text-zinc-100 py-16 border-t border-zinc-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-8">
+            <div className="flex justify-center">
+              <Image 
+                src="/logo.svg" 
+                alt="Rendezvous" 
+                width={120} 
+                height={120}
+                className="mb-6 rounded-full"
+              />
             </div>
-            <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-              <p>&copy; {new Date().getFullYear()} Rendezvous Restaurant. All rights reserved.</p>
+            <p className="text-zinc-400 text-lg font-light">Elevating dining to an art form</p>
+            <div className="flex justify-center space-x-8">
+              <a href="#" className="text-zinc-400 hover:text-zinc-100 transition-colors text-lg font-cormorant">
+                Instagram
+              </a>
+              <a href="#" className="text-zinc-400 hover:text-zinc-100 transition-colors text-lg font-cormorant">
+                Facebook
+              </a>
+              <a href="#" className="text-zinc-400 hover:text-zinc-100 transition-colors text-lg font-cormorant">
+                Twitter
+              </a>
             </div>
           </div>
-        </footer>
-      </div>
-  
+          <div className="mt-16 pt-8 border-t border-zinc-800 text-center">
+            <p className="text-zinc-400 font-light">&copy; {new Date().getFullYear()} Rendezvous Restaurant. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+
+    </main>
   );
-};
 
+}
