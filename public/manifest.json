@@ -4,11 +4,11 @@
     "description": "Fine dining experience at Rendezvous Restaurant",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#4a5568",
+    "background_color": "#18181B",
+    "theme_color": "#18181B",
     "icons": [
       {
-        "src": "/icon.svg",
+        "src": "/icon-192.png",
         "sizes": "192x192",
         "type": "image/png"
       },
