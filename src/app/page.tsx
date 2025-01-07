@@ -106,9 +106,7 @@ export default function HomePage() {
                     className="w-full h-full rounded-full"
                   />
                 </div>
-                <span className="ml-3 text-2xl font-cormorant font-light tracking-wider text-zinc-100">
-                  Rendezvous
-                </span>
+
               </div>
             </div>
             
@@ -122,7 +120,7 @@ export default function HomePage() {
               <a href="#contact" className="text-zinc-300 hover:text-zinc-100 transition-colors">Contact</a>
               <Button 
                 variant="outline" 
-                className="border-zinc-700 text-zinc-100 hover:bg-zinc-800 font-cormorant"
+                className="border-zinc-700 text-zinc-500 hover:bg-zinc-800 font-cormorant"
                 onClick={() => window.open(OPENTABLE_LINK, '_blank')}
               >
                 Book a Table
@@ -240,7 +238,7 @@ export default function HomePage() {
               <div>
                 <h2 className="text-4xl text-white font-bold mb-6 font-playfair">Our Story</h2>
                 <p className="text-gray-600 mb-6">
-                  Founded in 2010, Rendezvous has been serving exceptional cuisine
+                  Founded in 2025, Rendezvous is dedicated to  serving exceptional cuisine
                   in an elegant setting. Our passion for quality ingredients and
                   innovative cooking techniques has made us a destination for food
                   lovers.
@@ -267,7 +265,7 @@ export default function HomePage() {
                   <p className="text-gray-600">
                     <strong>Hours:</strong><br />
                     Mon-Fri: 11am - 10pm<br />
-                    Sat-Sun: 10am - 11pm
+                    Sat-Sun: 5pm - 11pm
                   </p>
                   <p className="text-gray-600">
                     <strong>Contact:</strong><br />
