@@ -26,7 +26,7 @@ export default async function Image() {
         }}
       >
         <img
-          src={`${process.env.NEXT_PUBLIC_BASE_URL}/logo.svg`}
+          src="/logo.svg"
           alt="Rendezvous Logo"
           style={{
             width: '200px',

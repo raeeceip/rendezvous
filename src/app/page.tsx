@@ -343,7 +343,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="text-center space-y-4">
-              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Chef's Table</h3>
+              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Chefs Table</h3>
               <p className="text-zinc-300 font-light leading-relaxed">
                 An intimate dining experience with our executive chef.
               </p>
