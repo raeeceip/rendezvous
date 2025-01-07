@@ -1,9 +1,11 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Cormorant } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant({
   subsets: ["latin"],
+  display: 'swap',
   variable: "--font-cormorant",
 });
 
@@ -11,44 +13,61 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.rendezvous.restaurant'),
   title: {
     default: "Rendezvous Restaurant | Fine Dining Experience",
-    template: "%s | Rendezvous Restaurant"
+    template: "%s | Rendezvous Restaurant",
   },
   description: "Experience exquisite fine dining at Rendezvous. Modern French cuisine in an elegant setting.",
+  keywords: [
+    "fine dining",
+    "french restaurant",
+    "luxury dining",
+    "culinary experience",
+    "gourmet restaurant",
+    "michelin star",
+  ],
+  authors: [{ name: "Rendezvous Restaurant" }],
+  creator: "Rendezvous Restaurant",
+  publisher: "Rendezvous Restaurant",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://www.rendezvous.restaurant",
-    siteName: "Rendezvous Restaurant",
     title: "Rendezvous Restaurant | Fine Dining Experience",
     description: "Experience exquisite fine dining at Rendezvous. Modern French cuisine in an elegant setting.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Rendezvous Restaurant",
-      },
-    ],
+    url: "https://www.rendezvous.restaurant",
+    siteName: "Rendezvous Restaurant",
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Rendezvous Restaurant",
     description: "Experience exquisite fine dining at Rendezvous",
-    images: ["/og-image.jpg"],
+    creator: "@rendezvous",
+    site: "@rendezvous",
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png" },
-    ],
-    shortcut: ["/shortcut-icon.png"],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
-  manifest: "/manifest.json",
   verification: {
-    google: "your-google-site-verification",
+    google: "your-google-verification-code",
+    yandex: "your-yandex-verification-code",
+    yahoo: "your-yahoo-verification-code",
+    other: {
+      'facebook-domain-verification': ['your-facebook-domain-verification'],
+    },
   },
 };
 
@@ -58,13 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable}`}>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
+    <html lang="en" className={cormorant.variable}>
       <body className="antialiased">{children}</body>
     </html>
   );

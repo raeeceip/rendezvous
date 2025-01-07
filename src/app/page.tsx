@@ -103,7 +103,7 @@ export default function HomePage() {
                     alt="Rendezvous"
                     width={48}
                     height={48}
-                    className="w-full h-full"
+                    className="w-full h-full rounded-full"
                   />
                 </div>
                 <span className="ml-3 text-2xl font-cormorant font-light tracking-wider text-zinc-100">
