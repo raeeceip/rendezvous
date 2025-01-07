@@ -305,7 +305,7 @@ export default function HomePage() {
               <p className="text-zinc-300 text-lg mb-8 font-light leading-relaxed">
                 Founded in 2025, Rendezvous is dedicated to serving exceptional cuisine
                 in an elegant setting. Our passion for quality ingredients and
-                innovative cooking techniques has made us a destination for food
+                innovative cooking techniques has made us a destination for border-zinc-800
                 lovers, combining traditional flavors with modern presentations.
               </p>
               <p className="text-zinc-300 text-lg mb-8 font-light leading-relaxed">
