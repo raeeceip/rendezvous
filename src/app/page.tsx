@@ -221,12 +221,9 @@ export default function HomePage() {
               >
                 <div className="py-4 flex flex-col space-y-4">
                   <a href="#about" className="text-zinc-300 hover:text-zinc-100">About</a>
-                  <Dialog>
-                    <DialogTrigger className="text-left text-zinc-300 hover:text-zinc-100">
-                      Menu
-                    </DialogTrigger>
-                    <MenuDialog />
-                  </Dialog>
+                    <Link href="/menu" className="text-zinc-300 hover:text-zinc-100">
+                    Menu
+                    </Link>
                   <a href="#contact" className="text-zinc-300 hover:text-zinc-100">Contact</a>
                   <Button 
                     variant="outline" 
@@ -317,7 +314,7 @@ export default function HomePage() {
               </p>
               <Button 
                 variant="outline" 
-                className="border-zinc-800 text-zinc-100 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg px-8 py-6"
+                className="border-zinc-800 text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg px-8 py-6"
               >
                 Learn More
               </Button>
