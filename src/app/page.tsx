@@ -3,17 +3,40 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { FeatureCard } from '@/components/ui/feature-card';
 import { MenuSelectionDialog } from '@/components/ui/menu-selection-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const customStyles = {
   backgroundGradient: 'linear-gradient(to bottom, rgba(10, 26, 47, 0.7), rgba(10, 26, 47, 0.5))',
 };
 
 const OPENTABLE_LINK = process.env.NEXT_PUBLIC_OPENTABLE_LINK || "https://www.opentable.com/restref/client/?rid=XXXXX";
+
+const featureCards = [
+  {
+    title: "Private Events",
+    description: "Host unforgettable gatherings in our elegant private spaces.",
+    link: "/private-events"
+  },
+  {
+    title: "Wine Selection",
+    description: "Explore our curated collection of fine wines from around the world.",
+    link: "/drinks-menu"
+  },
+  {
+    title: "Chef's Table",
+    description: "Experience an intimate dining journey with our executive chef.",
+    link: "/menu"
+  }
+];
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -197,7 +220,7 @@ export default function HomePage() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button 
                   variant="outline" 
-                  className="border-[#F5F0E8]/20 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 font-cormorant text-lg"
+                  className="border-[#F5F0E8]/40 bg-[#0A1A2F]/50 text-[#F5F0E8] hover:bg-[#F5F0E8]/20 font-cormorant text-lg px-8 py-3"
                   onClick={() => window.open(OPENTABLE_LINK, '_blank')}
                 >
                   Reserve a Table
@@ -208,7 +231,7 @@ export default function HomePage() {
                   <DialogTrigger asChild>
                     <Button 
                       variant="outline" 
-                      className="border-[#F5F0E8]/20 w-full text-[#F5F0E8] hover:bg-[#F5F0E8]/10 font-cormorant text-lg"
+                      className="border-[#F5F0E8]/40 bg-[#0A1A2F]/50 w-full text-[#F5F0E8] hover:bg-[#F5F0E8]/20 font-cormorant text-lg px-8 py-3"
                     >
                       View Menus
                     </Button>
@@ -273,22 +296,25 @@ export default function HomePage() {
       {/* Special Features Section */}
       <section className="py-24 bg-[#0A1A2F]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-12">
-            {['Private Events', 'Wine Selection', 'Chefs Table'].map((title, index) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="text-center space-y-4"
-              >
-                <h3 className="text-3xl font-cormorant text-[#F5F0E8] font-light tracking-wide">{title}</h3>
-                <p className="text-[#F5F0E8]/80 font-light leading-relaxed">
-                  Create unforgettable moments in our elegant dining spaces.
-                </p>
-              </motion.div>
+          <h2 className="text-4xl font-cormorant text-[#F5F0E8] font-light tracking-wide text-center mb-12">Our Offerings</h2>
+          <div className="hidden md:grid md:grid-cols-3 gap-8">
+            {featureCards.map((card, index) => (
+              <FeatureCard key={index} {...card} />
             ))}
+          </div>
+          <div className="md:hidden">
+            <Swiper
+              modules={[Pagination]}
+              spaceBetween={20}
+              slidesPerView={1}
+              pagination={{ clickable: true }}
+            >
+              {featureCards.map((card, index) => (
+                <SwiperSlide key={index}>
+                  <FeatureCard {...card} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </section>
