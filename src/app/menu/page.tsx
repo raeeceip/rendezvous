@@ -12,13 +12,13 @@ const MenuPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#18181B] text-zinc-100">
+    <div className="min-h-screen bg-[#0A1A2F] text-[#F5F0E8]">
       {/* Header */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed w-full bg-zinc-900/90 backdrop-blur-sm border-b border-zinc-800 z-50"
+        className="fixed w-full bg-[#0A1A2F]/90 backdrop-blur-sm border-b border-[#F5F0E8]/10 z-50"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
@@ -40,8 +40,8 @@ const MenuPage = () => {
 
       <div className="pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div {...fadeIn} className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-cormorant mb-4">Dinner Menu</h1>
-          <div className="h-0.5 w-32 bg-zinc-700 mx-auto"></div>
+          <h1 className="text-5xl md:text-7xl font-cormorant mb-4">Menu</h1>
+          <div className="h-0.5 w-32 bg-[#F5F0E8]/20 mx-auto"></div>
         </motion.div>
 
         {/* Menu Grid */}
@@ -53,83 +53,69 @@ const MenuPage = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="space-y-12"
           >
-            {/* Smalls & Shared Plates */}
+            {/* Appetizers */}
             <section>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-cormorant">Smalls</h2>
-                <div className="h-[1px] flex-grow mx-4 bg-zinc-800"></div>
-                <h2 className="text-3xl font-cormorant">Shared Plates</h2>
-              </div>
-              
+              <h2 className="text-3xl font-cormorant mb-6">Appetizers</h2>
               <div className="space-y-6">
-                {/* Smalls */}
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Crispy Wings <span className="text-zinc-400">18</span></h3>
-                    <p className="text-sm text-zinc-400">smoky BBQ, house hot, honey garlic, peri-peri, dry rub, honey hot, lemon pepper</p>
+                    <h3 className="text-xl font-cormorant">King of Wings <span className="text-[#F5F0E8]/70">17</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Jerk, Northern BBQ, hot 007, Honey garlic, Lemon pepper, Cajun, El diablo</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Jerk Dip <span className="text-zinc-400">17</span></h3>
-                    <p className="text-sm text-zinc-400">Swiss cheese blend, black herb butter with a side of grilled naan</p>
+                    <h3 className="text-xl font-cormorant">Spinach Dip <span className="text-[#F5F0E8]/70">16</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Four cheese blend, Spinach, Spring herb butter, served with grilled Naan bread</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Tacos <span className="text-zinc-400">16</span></h3>
-                    <p className="text-sm text-zinc-400">Your choice of creole shrimp or chicken, pickled slaw, mango salsa, cajun crema</p>
-                  </div>
-                </div>
-
-                {/* Shared Plates */}
-                <div className="menu-item">
-                  <div>
-                    <h3 className="text-xl font-cormorant">Chicken Dumplings <span className="text-zinc-400">17</span></h3>
-                    <p className="text-sm text-zinc-400">Jerk chicken and slaw filling with a sweet and spicy ginger sauce</p>
+                    <h3 className="text-xl font-cormorant">Taco Cups <span className="text-[#F5F0E8]/70">15</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Chicken or beef, orange pico de gallo, southwest mayo, sweet red cabbage</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Crispy Cauliflour <span className="text-zinc-400">15</span></h3>
-                    <p className="text-sm text-zinc-400">Korean BBQ sauce, pickled slaw topped with sesame seeds</p>
+                    <h3 className="text-xl font-cormorant">Crispy Beef Wontons <span className="text-[#F5F0E8]/70">16</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Vegetable braised beef, sauteed onions in a fried wonton wrapper</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Charcuterie <span className="text-zinc-400">25</span></h3>
-                    <p className="text-sm text-zinc-400">Brie and cheddar, prosciutto, coppa salami, grapes, dried fruit, strawberry compote</p>
+                    <h3 className="text-xl font-cormorant">Fish Cakes <span className="text-[#F5F0E8]/70">17</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Cod fish, potatoes, bell peppers, scotch bonnet, heavy cream, seasoned egg yolks</p>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Large Plates */}
+            {/* Salads */}
             <section>
-              <h2 className="text-3xl font-cormorant mb-6">Large Plates</h2>
+              <h2 className="text-3xl font-cormorant mb-6">Salads</h2>
               <div className="space-y-6">
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Blackened Chicken <span className="text-zinc-400">35</span></h3>
-                    <p className="text-sm text-zinc-400">Chicken breast, sun dried mushroom rice, pickled slaw sweet plantain, jalapeno crema</p>
+                    <h3 className="text-xl font-cormorant">House Salad <span className="text-[#F5F0E8]/70">14</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Spring mix, cucumbers, bell peppers, red onions, cherry tomatoes, house dressing</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Pan Seared Salmon <span className="text-zinc-400">33</span></h3>
-                    <p className="text-sm text-zinc-400">Salmon fillet on a bed of aromatic rice with seasonal vegetables</p>
+                    <h3 className="text-xl font-cormorant">Caesar Salad <span className="text-[#F5F0E8]/70">15</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Romaine lettuce, bacon, parmesan cheese, garlic herb croutons, house Caesar dressing</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Jollof Heritage <span className="text-zinc-400">39</span></h3>
-                    <p className="text-sm text-zinc-400">Jollof rice, 6oz sirloin coleslaw, plantains</p>
+                    <h3 className="text-xl font-cormorant">Greek Salad <span className="text-[#F5F0E8]/70">16</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Spring mix, olives, red onions, cherry tomatoes, feta cheese, cucumbers, house greek dressing</p>
                   </div>
                 </div>
               </div>
@@ -143,55 +129,69 @@ const MenuPage = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="space-y-12"
           >
-            {/* Steakhouse */}
+            {/* Mains */}
             <section>
-              <h2 className="text-3xl font-cormorant mb-6">Steakhouse</h2>
+              <h2 className="text-3xl font-cormorant mb-6">Mains</h2>
               <div className="space-y-6">
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">6oz or 12oz Steak <span className="text-zinc-400">(35)(55)</span></h3>
-                    <p className="text-sm text-zinc-400">Your choice of 6oz sirloin (35) or 12oz ribeye (55), in our house marinade, seasonal vegetables and fries</p>
+                    <h3 className="text-xl font-cormorant">Colonel Salmon <span className="text-[#F5F0E8]/70">32</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Citrus pan seared salmon, creamy white wine sauce</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Steak and Shrimp <span className="text-zinc-400">(45)(63)</span></h3>
-                    <p className="text-sm text-zinc-400">Your choice of 6oz sirloin (63), in our house marinade, black tiger shrimp in browned butter seasonal vegetables and fries</p>
+                    <h3 className="text-xl font-cormorant">Sirloin Steak <span className="text-[#F5F0E8]/70">38</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">10oz sirloin steak, new orleans creole steak spice, topped with herb & garlic butter</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Gold Lamb Chops <span className="text-zinc-400">(52)(77)</span></h3>
-                    <p className="text-sm text-zinc-400">Half rack (52) or full rack (77) in our house marinade, chimichurri sauce, seasonal vegetables, mash</p>
+                    <h3 className="text-xl font-cormorant">RDV Lamb Chops <span className="text-[#F5F0E8]/70">42</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Half rack lamb chop, house red wine marinade</p>
+                  </div>
+                </div>
+
+                <div className="menu-item">
+                  <div>
+                    <h3 className="text-xl font-cormorant">Steam Stuffed Chicken <span className="text-[#F5F0E8]/70">34</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">House marinated steamed chicken breast, stuffed with cream cheese, spinach, mushrooms and bell peppers</p>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Burgers */}
+            {/* Pastas */}
             <section>
-              <h2 className="text-3xl font-cormorant mb-6">Burgers</h2>
+              <h2 className="text-3xl font-cormorant mb-6">Pastas</h2>
               <div className="space-y-6">
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Beef Burger <span className="text-zinc-400">25</span></h3>
-                    <p className="text-sm text-zinc-400">AAA Canadian ground beef, lettuce, tomato, caramelized onions, cheddar cheese, dill pickles, bacon, jerk aioli, choice of side</p>
+                    <h3 className="text-xl font-cormorant">Bacon Carbonara <span className="text-[#F5F0E8]/70">26</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Spaghetti noodles, egg yolk, heavy cream, green onions, diced tomatoes, parmesan cheese, bacon</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Chicken Burger <span className="text-zinc-400">24</span></h3>
-                    <p className="text-sm text-zinc-400">Fried chicken, creamy slaw, pickles, cheddar, lettuce, tomato, chipotle aioli, choice of side</p>
+                    <h3 className="text-xl font-cormorant">Seafood Linguine <span className="text-[#F5F0E8]/70">32</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Linguine noodles, lobster, jumbo shrimp, scallops, creamy white wine sauce, diced bell peppers</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Mushroom Burger <span className="text-zinc-400">22</span></h3>
-                    <p className="text-sm text-zinc-400">Vegan burger, crispy onions, tomato, lettuce, jerk aioli, choice of side</p>
+                    <h3 className="text-xl font-cormorant">Rosee Chorizo <span className="text-[#F5F0E8]/70">28</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Rosee sauce, rigatoni noodles, chorizo, garlic, basil, chipotle peppers</p>
+                  </div>
+                </div>
+
+                <div className="menu-item">
+                  <div>
+                    <h3 className="text-xl font-cormorant">Pesto Amore <span className="text-[#F5F0E8]/70">27</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Penne noodles, pesto alfredo sauce, boneless grilled chicken thighs, cherry tomatoes</p>
                   </div>
                 </div>
               </div>
@@ -203,31 +203,45 @@ const MenuPage = () => {
               <div className="space-y-6">
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Pineapple Crème Brûlée <span className="text-zinc-400">10</span></h3>
-                    <p className="text-sm text-zinc-400">Pineapple bowl with fresh fruit</p>
+                    <h3 className="text-xl font-cormorant">Crème Brûlée <span className="text-[#F5F0E8]/70">12</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Classic vanilla bean crème brûlée with caramelized sugar crust</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Berry Cheesecake <span className="text-zinc-400">12</span></h3>
-                    <p className="text-sm text-zinc-400">Classic New York style cheesecake raspberry bourbon sauce, maple cream, berries</p>
+                    <h3 className="text-xl font-cormorant">Berry Cheesecake <span className="text-[#F5F0E8]/70">14</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">New York style cheesecake with fresh berry compote</p>
                   </div>
                 </div>
 
                 <div className="menu-item">
                   <div>
-                    <h3 className="text-xl font-cormorant">Ice Cream & Fruit <span className="text-zinc-400">8</span></h3>
-                    <p className="text-sm text-zinc-400">Three scoops of ice cream topped with berries</p>
+                    <h3 className="text-xl font-cormorant">Rum Infused Brownie <span className="text-[#F5F0E8]/70">13</span></h3>
+                    <p className="text-sm text-[#F5F0E8]/70">Warm chocolate brownie with vanilla ice cream and rum caramel sauce</p>
                   </div>
                 </div>
               </div>
             </section>
           </motion.div>
         </div>
+
+        {/* Sides */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-16 text-center"
+        >
+          <h2 className="text-3xl font-cormorant mb-6">Sides</h2>
+          <p className="text-[#F5F0E8]/70">
+            Side salad, sweet plantain, mash potatoes, jollof rice, fries, yam fries
+          </p>
+        </motion.div>
       </div>
     </div>
   );
 };
 
 export default MenuPage;
+

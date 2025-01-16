@@ -2,146 +2,46 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { MenuSelectionDialog } from '@/components/ui/menu-selection-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-// Add custom styles to match the logo
 const customStyles = {
-  backgroundGradient: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5))',
-  overlayColor: 'rgba(0, 0, 0, 0.6)',
-};
-
-// Types
-type MenuItem = {
-  name: string;
-  description: string;
-  price: number | string;
-};
-
-type MenuCategories = {
-  smalls: MenuItem[];
-  shared: MenuItem[];
-  large: MenuItem[];
-  steakhouse: MenuItem[];
-  salads: MenuItem[];
-  desserts: MenuItem[];
-};
-
-// Constants
-const menuCategories: MenuCategories = {
-  smalls: [
-    { name: 'Crispy Wings', description: 'smoky BBQ, house hot, honey garlic, peri-peri, dry rub, honey hot, lemon pepper', price: 18 },
-    { name: 'Jerk Dip', description: 'Swiss cheese blend, black herb butter with a side of grilled naan', price: 17 },
-    { name: 'Tacos', description: 'Your choice of creole shrimp or chicken, pickled slaw, mango salsa, cajun crema', price: 16 }
-  ],
-  shared: [
-    { name: 'Chicken Dumplings', description: 'Jerk chicken and slaw filling with a sweet and spicy ginger sauce', price: 17 },
-    { name: 'Crispy Cauliflour', description: 'Korean BBQ sauce, pickled slaw topped with sesame seeds', price: 15 },
-    { name: 'Charcuterie', description: 'Brie and cheddar, prosciutto, coppa salami, grapes, dried fruit, strawberry compote', price: 25 }
-  ],
-  large: [
-    { name: 'Blackened Chicken', description: 'Chicken breast, sun dried mushroom rice, pickled slaw sweet plantain, jalapeno crema', price: 35 },
-    { name: 'Pan Seared Salmon', description: 'Salmon fillet on a bed of aromatic rice with seasonal vegetables', price: 33 },
-    { name: 'Jollof Heritage', description: 'Jollof rice, 6oz sirloin coleslaw, plantains', price: 39 }
-  ],
-  steakhouse: [
-    { name: '6oz or 12oz Steak', description: 'Your choice of 6oz sirloin or 12oz ribeye, in our house marinade, seasonal vegetables and fries', price: '35/55' },
-    { name: 'Steak and Shrimp', description: 'Your choice of 6oz sirloin with black tiger shrimp in browned butter', price: '45/63' },
-    { name: 'Gold Lamb Chops', description: 'Half rack or full rack in our house marinade, chimichurri sauce', price: '52/77' }
-  ],
-  salads: [
-    { name: 'Mango Salad', description: 'Black tiger shrimp, white wine vinaigrette, avocado crema, tajin, cucumber', price: 24 },
-    { name: 'Caesar Salad', description: 'romaine, caesar dressing, toasted rosemary garlic bread crumbs, grated parmesan, bacon', price: 22 },
-    { name: 'Frisée Salad', description: 'potato, lemon vinaigrette, double bacon, topped with shaved cheddar', price: 20 }
-  ],
-  desserts: [
-    { name: 'Pineapple Crème Brûlée', description: 'Pineapple bowl with fresh fruit', price: 10 },
-    { name: 'Berry Cheesecake', description: 'Classic New York style cheesecake raspberry bourbon sauce', price: 12 },
-    { name: 'Rum Infused Brownie', description: 'Dark chocolate rum infused brownie, vanilla ice cream', price: 12 }
-  ]
+  backgroundGradient: 'linear-gradient(to bottom, rgba(10, 26, 47, 0.7), rgba(10, 26, 47, 0.5))',
 };
 
 const OPENTABLE_LINK = process.env.NEXT_PUBLIC_OPENTABLE_LINK || "https://www.opentable.com/restref/client/?rid=XXXXX";
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<keyof MenuCategories>('large');
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Prevent hydration mismatch by not rendering until mounted
-  if (!isMounted) {
-    return null;
-  }
-
-  const MenuDialog = () => (
-    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-zinc-900/95 backdrop-blur-sm">
-      <DialogHeader>
-        <DialogTitle className="text-3xl font-cormorant text-center mb-8 text-zinc-100">Our Menu</DialogTitle>
-      </DialogHeader>
-      <div className="space-y-8 p-6">
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
-          {Object.keys(menuCategories).map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              className={`font-cormorant capitalize ${
-                selectedCategory === category 
-                  ? 'bg-zinc-700 text-zinc-100' 
-                  : 'text-zinc-300 border-zinc-700 hover:bg-zinc-800'
-              }`}
-              onClick={() => setSelectedCategory(category as keyof MenuCategories)}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedCategory}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.3 }}
-            className="space-y-6"
-          >
-            {menuCategories[selectedCategory].map((item, index) => (
-              <motion.div
-                key={`${selectedCategory}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex justify-between items-start p-4 border-b border-zinc-800"
-              >
-                <div className="flex-1 pr-4">
-                  <h4 className="font-cormorant font-medium text-lg text-zinc-100">{item.name}</h4>
-                  <p className="text-zinc-400 text-sm mt-1 font-light">{item.description}</p>
-                </div>
-                <span className="font-cormorant text-lg text-zinc-100 whitespace-nowrap">
-                  ${item.price}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </DialogContent>
-  );
+  if (!isMounted) return null;
 
   return (
-    <main className="min-h-screen bg-zinc-900 overflow-x-hidden">
+    <main className="min-h-screen bg-[#0A1A2F] overflow-x-hidden">
       {/* Header */}
-      <header className="fixed w-full bg-zinc-900/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="fixed w-full bg-[#0A1A2F]/80 backdrop-blur-md border-b border-[#F5F0E8]/10 z-50"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center space-x-4">
-              <div className="w-16 h-16 relative">
+              <motion.div 
+                className="w-16 h-16 relative"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Image
                   src="/logo.svg"
                   alt="Rendezvous"
@@ -150,38 +50,57 @@ export default function HomePage() {
                   className="w-full h-full rounded-full"
                   priority
                 />
-              </div>
-              <span className="text-3xl font-cormorant text-zinc-100 tracking-widest font-light">Rendezvous</span>
+              </motion.div>
+              <span className="text-3xl font-cormorant text-[#F5F0E8] tracking-widest font-light">Rendezvous</span>
             </Link>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8 font-cormorant">
-              <a href="#about" className="text-zinc-300 hover:text-zinc-100 transition-colors">
-                About
-              </a>
-              <Dialog>
-                <DialogTrigger>
-                  <span className="text-zinc-300 hover:text-zinc-100 transition-colors cursor-pointer">
-                    Menu
-                  </span>
-                </DialogTrigger>
-                <MenuDialog />
-              </Dialog>
-              <a href="#contact" className="text-zinc-300 hover:text-zinc-100 transition-colors">
-                Contact
-              </a>
-              <Button 
-                variant="outline" 
-                className="border-zinc-700 text-zinc-100 hover:bg-zinc-800 font-cormorant"
-                onClick={() => window.open(OPENTABLE_LINK, '_blank')}
+              <motion.a 
+                href="#about" 
+                className="text-[#F5F0E8]/80 hover:text-[#F5F0E8] transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Book a Table
-              </Button>
+                About
+              </motion.a>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <motion.button
+                    className="text-[#F5F0E8]/80 hover:text-[#F5F0E8] transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Menus
+                  </motion.button>
+                </DialogTrigger>
+                <MenuSelectionDialog />
+              </Dialog>
+              <motion.a 
+                href="#contact" 
+                className="text-[#F5F0E8]/80 hover:text-[#F5F0E8] transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Contact
+              </motion.a>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  variant="outline" 
+                  className="border-[#F5F0E8]/20 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 font-cormorant"
+                  onClick={() => window.open(OPENTABLE_LINK, '_blank')}
+                >
+                  Book a Table
+                </Button>
+              </motion.div>
             </nav>
 
             {/* Mobile Menu Button */}
             <button 
-              className="md:hidden text-zinc-100"
+              className="md:hidden text-[#F5F0E8]"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <svg 
@@ -217,17 +136,22 @@ export default function HomePage() {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                className="md:hidden border-t border-zinc-800"
+                className="md:hidden border-t border-[#F5F0E8]/10"
               >
                 <div className="py-4 flex flex-col space-y-4">
-                  <a href="#about" className="text-zinc-300 hover:text-zinc-100">About</a>
-                    <Link href="/menu" className="text-zinc-300 hover:text-zinc-100">
-                    Menu
-                    </Link>
-                  <a href="#contact" className="text-zinc-300 hover:text-zinc-100">Contact</a>
+                  <a href="#about" className="text-[#F5F0E8]/80 hover:text-[#F5F0E8]">About</a>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-left text-[#F5F0E8]/80 hover:text-[#F5F0E8]">
+                        Menus
+                      </button>
+                    </DialogTrigger>
+                    <MenuSelectionDialog />
+                  </Dialog>
+                  <a href="#contact" className="text-[#F5F0E8]/80 hover:text-[#F5F0E8]">Contact</a>
                   <Button 
                     variant="outline" 
-                    className="border-zinc-700 text-zinc-100 hover:bg-zinc-800 w-full font-cormorant"
+                    className="border-[#F5F0E8]/20 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 w-full font-cormorant"
                     onClick={() => window.open(OPENTABLE_LINK, '_blank')}
                   >
                     Book a Table
@@ -237,7 +161,7 @@ export default function HomePage() {
             )}
           </AnimatePresence>
         </div>
-      </header>
+      </motion.header>
 
       {/* Hero Section */}
       <section className="relative h-screen">
@@ -257,155 +181,193 @@ export default function HomePage() {
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-          <div className="flex flex-col justify-center h-full text-zinc-100 pt-24">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex flex-col justify-center h-full text-[#F5F0E8] pt-24"
+          >
             <h1 className="text-6xl md:text-8xl font-cormorant font-light mb-8 tracking-widest leading-tight">
               A Culinary<br />Journey
             </h1>
-            <p className="text-xl md:text-3xl mb-12 max-w-2xl font-cormorant font-light tracking-wider leading-relaxed">
+            <p className="text-xl md:text-3xl mb-12 max-w-2xl font-cormorant font-light tracking-wider leading-relaxed text-[#F5F0E8]/90">
               Experience the art of fine dining in an atmosphere of understated elegance.
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
-              <Button 
-                variant="outline" 
-                className="border-zinc-800 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg"
-                onClick={() => window.open(OPENTABLE_LINK, '_blank')}
-              >
-                Reserve a Table
-              </Button>
-              <Dialog>
-                <Link href="/menu">
-                  <Button 
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
                   variant="outline" 
-                  className="border-zinc-800 w-full text-zinc-500 hover:bg-zinc-500 hover:text-zinc-900 font-cormorant text-lg"
-                  >
-                  View Menu
-                  </Button>
-                </Link>
-                <MenuDialog />
-              </Dialog>
+                  className="border-[#F5F0E8]/20 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 font-cormorant text-lg"
+                  onClick={() => window.open(OPENTABLE_LINK, '_blank')}
+                >
+                  Reserve a Table
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      className="border-[#F5F0E8]/20 w-full text-[#F5F0E8] hover:bg-[#F5F0E8]/10 font-cormorant text-lg"
+                    >
+                      View Menus
+                    </Button>
+                  </DialogTrigger>
+                  <MenuSelectionDialog />
+                </Dialog>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 bg-zinc-900">
+      <section id="about" className="py-24 bg-[#0A1A2F]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="relative h-[400px] md:h-[600px]">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative h-[400px] md:h-[600px]"
+            >
               <Image 
                 src="/restaurant.jpeg" 
                 alt="Our restaurant" 
                 fill
                 className="rounded-lg shadow-xl object-cover"
               />
-            </div>
-            <div className="space-y-8">
-              <h2 className="text-5xl text-zinc-100 font-light mb-6 font-cormorant tracking-wide">Our Story</h2>
-              <p className="text-zinc-300 text-lg mb-8 font-light leading-relaxed">
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-8"
+            >
+              <h2 className="text-5xl text-[#F5F0E8] font-light mb-6 font-cormorant tracking-wide">Our Story</h2>
+              <p className="text-[#F5F0E8]/80 text-lg mb-8 font-light leading-relaxed">
                 Founded in 2025, Rendezvous is dedicated to serving exceptional cuisine
                 in an elegant setting. Our passion for quality ingredients and
                 innovative cooking techniques has made us a destination for food
                 lovers, combining traditional flavors with modern presentations.
               </p>
-              <p className="text-zinc-300 text-lg mb-8 font-light leading-relaxed">
+              <p className="text-[#F5F0E8]/80 text-lg mb-8 font-light leading-relaxed">
                 Every dish tells a story, crafted with precision and care by our expert culinary team.
                 We believe in creating moments that last, experiences that linger, and flavors that inspire.
               </p>
-              <Button 
-                variant="outline" 
-                className="border-zinc-800 text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg px-8 py-6"
-              >
-                Learn More
-              </Button>
-            </div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  variant="outline" 
+                  className="border-[#F5F0E8]/20 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 font-cormorant text-lg px-8 py-6"
+                >
+                  Learn More
+                </Button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Special Features Section */}
-      <section className="py-24 bg-zinc-800">
+      <section className="py-24 bg-[#0A1A2F]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-12">
-            <div className="text-center space-y-4">
-              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Private Events</h3>
-              <p className="text-zinc-300 font-light leading-relaxed">
-                Create unforgettable moments in our elegant private dining spaces.
-              </p>
-            </div>
-            <div className="text-center space-y-4">
-              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Wine Selection</h3>
-              <p className="text-zinc-300 font-light leading-relaxed">
-                Curated collection of fine wines from around the world.
-              </p>
-            </div>
-            <div className="text-center space-y-4">
-              <h3 className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide">Chefs Table</h3>
-              <p className="text-zinc-300 font-light leading-relaxed">
-                An intimate dining experience with our executive chef.
-              </p>
-            </div>
+            {['Private Events', 'Wine Selection', 'Chefs Table'].map((title, index) => (
+              <motion.div
+                key={title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                className="text-center space-y-4"
+              >
+                <h3 className="text-3xl font-cormorant text-[#F5F0E8] font-light tracking-wide">{title}</h3>
+                <p className="text-[#F5F0E8]/80 font-light leading-relaxed">
+                  Create unforgettable moments in our elegant dining spaces.
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-zinc-900">
+      <section id="contact" className="py-24 bg-[#0A1A2F]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-16">
-            <div className="space-y-8">
-              <h2 className="text-5xl font-cormorant text-zinc-100 font-light tracking-wide">Visit Us</h2>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-8"
+            >
+              <h2 className="text-5xl font-cormorant text-[#F5F0E8] font-light tracking-wide">Visit Us</h2>
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-2xl font-cormorant text-zinc-200 mb-4">Location</h3>
-                  <p className="text-zinc-300 text-lg font-light leading-relaxed">
-                    101 Clarence St, Ottawa, Ontario<br />
-                    
+                  <h3 className="text-2xl font-cormorant text-[#F5F0E8]/90 mb-4">Location</h3>
+                  <p className="text-[#F5F0E8]/80 text-lg font-light leading-relaxed">
+                    101 Clarence St, Ottawa, Ontario
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-cormorant text-zinc-200 mb-4">Hours</h3>
-                  <p className="text-zinc-300 text-lg font-light leading-relaxed">
+                  <h3 className="text-2xl font-cormorant text-[#F5F0E8]/90 mb-4">Hours</h3>
+                  <p className="text-[#F5F0E8]/80 text-lg font-light leading-relaxed">
                     Monday - Friday: 11am - 10pm<br />
                     Saturday - Sunday: 5pm - 11pm
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-cormorant text-zinc-200 mb-4">Contact</h3>
-                  <p className="text-zinc-300 text-lg font-light leading-relaxed">
+                  <h3 className="text-2xl font-cormorant text-[#F5F0E8]/90 mb-4">Contact</h3>
+                  <p className="text-[#F5F0E8]/80 text-lg font-light leading-relaxed">
                     Phone: (555) 123-4567<br />
                     Email: info@rendezvous.restaurant
                   </p>
                 </div>
               </div>
-            </div>
-            <div>
-              <Card className="bg-zinc-800 border-zinc-700">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="bg-[#0A1A2F]/50 border-[#F5F0E8]/10">
                 <CardHeader>
-                  <CardTitle className="text-3xl font-cormorant text-zinc-100 font-light tracking-wide text-center">Make a Reservation</CardTitle>
+                  <CardTitle className="text-3xl font-cormorant text-[#F5F0E8] font-light tracking-wide text-center">Make a Reservation</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <p className="text-zinc-300 text-center font-light leading-relaxed">
+                  <p className="text-[#F5F0E8]/80 text-center font-light leading-relaxed">
                     Join us for an unforgettable dining experience.
                   </p>
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-zinc-800 text-zinc-100 hover:bg-zinc-100 hover:text-zinc-900 font-cormorant text-lg py-6"
-                    onClick={() => window.open(OPENTABLE_LINK, '_blank')}
-                  >
-                    Book on OpenTable
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-[#F5F0E8]/20 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 font-cormorant text-lg py-6"
+                      onClick={() => window.open(OPENTABLE_LINK, '_blank')}
+                    >
+                      Book on OpenTable
+                    </Button>
+                  </motion.div>
                 </CardContent>
               </Card>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-zinc-900 text-zinc-100 py-16 border-t border-zinc-800">
+      <footer className="bg-[#0A1A2F] text-[#F5F0E8] py-16 border-t border-[#F5F0E8]/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center space-y-8"
+          >
             <div className="flex justify-center">
               <Image 
                 src="/logo.svg" 
@@ -415,26 +377,27 @@ export default function HomePage() {
                 className="mb-6 rounded-full"
               />
             </div>
-            <p className="text-zinc-400 text-lg font-light">Elevating dining to an art form</p>
+            <p className="text-[#F5F0E8]/60 text-lg font-light">Elevating dining to an art form</p>
             <div className="flex justify-center space-x-8">
-              <a href="#" className="text-zinc-400 hover:text-zinc-100 transition-colors text-lg font-cormorant">
-                Instagram
-              </a>
-              <a href="#" className="text-zinc-400 hover:text-zinc-100 transition-colors text-lg font-cormorant">
-                Facebook
-              </a>
-              <a href="#" className="text-zinc-400 hover:text-zinc-100 transition-colors text-lg font-cormorant">
-                Twitter
-              </a>
+              {['Instagram', 'Facebook', 'Twitter'].map((social) => (
+                <motion.a
+                  key={social}
+                  href="#"
+                  className="text-[#F5F0E8]/60 hover:text-[#F5F0E8] transition-colors text-lg font-cormorant"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  {social}
+                </motion.a>
+              ))}
             </div>
-          </div>
-          <div className="mt-16 pt-8 border-t border-zinc-800 text-center">
-            <p className="text-zinc-400 font-light">&copy; {new Date().getFullYear()} Rendezvous Restaurant. All rights reserved.</p>
+          </motion.div>
+          <div className="mt-16 pt-8 border-t border-[#F5F0E8]/10 text-center">
+            <p className="text-[#F5F0E8]/60 font-light">&copy; {new Date().getFullYear()} Rendezvous Restaurant. All rights reserved.</p>
           </div>
         </div>
       </footer>
-
     </main>
   );
-
 }
+
