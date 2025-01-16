@@ -220,7 +220,7 @@ export default function HomePage() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button 
                   variant="outline" 
-                  className="border-[#F5F0E8]/40 bg-[#0A1A2F]/50 text-[#F5F0E8] hover:bg-[#F5F0E8]/20 font-cormorant text-lg px-8 py-3"
+                  className="border-[#F5F0E8]/40 bg-[#0A1A2F]/70 text-[#D4AF37] hover:bg-[#F5F0E8]/20 hover:text-[#0A1A2F] font-cormorant text-lg px-8 py-3 transition-colors"
                   onClick={() => window.open(OPENTABLE_LINK, '_blank')}
                 >
                   Reserve a Table
@@ -231,7 +231,7 @@ export default function HomePage() {
                   <DialogTrigger asChild>
                     <Button 
                       variant="outline" 
-                      className="border-[#F5F0E8]/40 bg-[#0A1A2F]/50 w-full text-[#F5F0E8] hover:bg-[#F5F0E8]/20 font-cormorant text-lg px-8 py-3"
+                      className="border-[#F5F0E8]/40 bg-[#0A1A2F]/70 w-full text-[#D4AF37] hover:bg-[#F5F0E8]/20 hover:text-[#0A1A2F] font-cormorant text-lg px-8 py-3 transition-colors"
                     >
                       View Menus
                     </Button>
